@@ -25,7 +25,7 @@
 1. 安装插件：
 
    ```bash
-   pnpm add @mcthesw/quartz-simple-search@github:mcthesw/quartz-simple-search#v1.0.0
+   pnpm add @mcthesw/quartz-simple-search@github:mcthesw/quartz-simple-search#v1.0.1
    ```
 
 2. 在 `quartz.config.yaml` 中，把官方搜索 `@quartz-community/search` 换成本插件：
@@ -61,4 +61,4 @@ pnpm build   # 构建到 dist/
 
 ## 协议
 
-[MIT](./LICENSE)。搜索框的结构和样式改编自 [@quartz-community/search](https://github.com/quartz-community/search)（MIT）。
+[MIT](./LICENSE)。搜索框的结构和样式改编自 [@quartz-community/search](https://github.com/quartz-community/search)（MIT），见 [THIRD_PARTY_NOTICES.md](./THIRD_PARTY_NOTICES.md)。
