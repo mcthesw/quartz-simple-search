@@ -1,0 +1,84 @@
+{
+  "name": "@mcthesw/quartz-simple-search",
+  "version": "1.0.0",
+  "description": "Quartz 5 搜索插件：标题或正文包含搜索词即命中，中文、英文都能按任意片段搜索。",
+  "type": "module",
+  "license": "MIT",
+  "author": "Sworld",
+  "homepage": "https://github.com/mcthesw/quartz-simple-search",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mcthesw/quartz-simple-search"
+  },
+  "keywords": [
+    "quartz",
+    "quartz-plugin",
+    "search"
+  ],
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./components": {
+      "types": "./dist/components/index.d.ts",
+      "import": "./dist/components/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "check": "pnpm typecheck && pnpm test"
+  },
+  "peerDependencies": {
+    "preact": "^10.0.0"
+  },
+  "devDependencies": {
+    "@quartz-community/types": "^1.0.0",
+    "@types/node": "^24.19.2",
+    "esbuild": "^0.25.0",
+    "preact": "^10.28.2",
+    "tsup": "^8.5.0",
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.4"
+  },
+  "packageManager": "pnpm@10.28.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "quartz": {
+    "name": "quartz-simple-search",
+    "displayName": "Simple Search",
+    "category": "component",
+    "version": "1.0.0",
+    "quartzVersion": ">=5.0.0",
+    "dependencies": [],
+    "defaultOrder": 50,
+    "defaultEnabled": true,
+    "defaultOptions": {
+      "enablePreview": true
+    },
+    "components": {
+      "SimpleSearch": {
+        "displayName": "Simple Search",
+        "defaultPosition": "left",
+        "defaultPriority": 20
+      }
+    },
+    "optionSchema": {
+      "enablePreview": {
+        "type": "boolean"
+      }
+    }
+  }
+}
