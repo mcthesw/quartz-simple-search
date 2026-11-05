@@ -15,6 +15,7 @@
 - 用空格分隔多个词时，每个词都要出现才算命中。不区分大小写。
 - 排序：标题命中的排在前面，其余按搜索词在正文中出现的次数从多到少排。
 - 最多显示 8 条结果，结果和预览中的搜索词会高亮。
+- 打开结果后，页面直接定位到正文中第一处命中，并短暂高亮。
 
 界面沿用官方搜索的样式：点击搜索框或按 `Ctrl/⌘ + K` 打开，方向键选择，回车打开，`Esc` 关闭。桌面端右侧显示页面预览。
 
@@ -25,7 +26,7 @@
 1. 安装插件：
 
    ```bash
-   pnpm add @mcthesw/quartz-simple-search@github:mcthesw/quartz-simple-search#v1.0.1
+   pnpm add @mcthesw/quartz-simple-search@github:mcthesw/quartz-simple-search#v1.1.0
    ```
 
 2. 在 `quartz.config.yaml` 中，把官方搜索 `@quartz-community/search` 换成本插件：

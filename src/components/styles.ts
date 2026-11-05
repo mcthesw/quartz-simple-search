@@ -221,4 +221,14 @@ export default `
 .search .result-card.no-match {
   cursor: default;
 }
+
+.search-jump-target {
+  background: color-mix(in srgb, var(--tertiary) 40%, rgba(255, 255, 255, 0));
+  border-radius: 3px;
+  transition: background 1s ease;
+}
+
+.search-jump-target.fade-out {
+  background: transparent;
+}
 `

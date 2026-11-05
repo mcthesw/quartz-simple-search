@@ -1,6 +1,6 @@
 {
   "name": "@mcthesw/quartz-simple-search",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Quartz 5 搜索插件：标题或正文包含搜索词即命中，中文、英文都能按任意片段搜索。",
   "type": "module",
   "license": "MIT",
@@ -61,7 +61,7 @@
     "name": "quartz-simple-search",
     "displayName": "Simple Search",
     "category": "component",
-    "version": "1.0.1",
+    "version": "1.1.0",
     "quartzVersion": ">=5.0.0",
     "dependencies": [],
     "defaultOrder": 50,

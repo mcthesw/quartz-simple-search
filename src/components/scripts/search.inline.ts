@@ -8,6 +8,8 @@ const MAX_RESULTS = 8
 let docs: SearchDoc[] | null = null
 const pageCache = new Map<string, Element[]>()
 const cleanups: (() => void)[] = []
+// 点击结果时记下搜索词，跳转后在目标页定位到第一处命中
+const JUMP_KEY = "quartz-simple-search:query"
 
 function on<K extends keyof HTMLElementEventMap>(
   target: HTMLElement | Document,
@@ -80,6 +82,48 @@ function highlightElement(root: Element, terms: string[]) {
     }
     fragment.append(text.slice(last))
     node.replaceWith(fragment)
+  }
+}
+
+function jumpToMatch() {
+  const query = sessionStorage.getItem(JUMP_KEY)
+  if (query === null) return
+  sessionStorage.removeItem(JUMP_KEY)
+  const pattern = termsPattern(parseTerms(query))
+  const article = document.querySelector(".center article")
+  if (!pattern || !article) return
+
+  const walker = document.createTreeWalker(article, NodeFilter.SHOW_TEXT)
+  for (let n = walker.nextNode(); n; n = walker.nextNode()) {
+    const node = n as Text
+    pattern.lastIndex = 0
+    const match = pattern.exec(node.nodeValue ?? "")
+    if (!match) continue
+    const target = node.splitText(match.index)
+    target.splitText(match[0].length)
+    const mark = document.createElement("span")
+    mark.className = "search-jump-target"
+    target.replaceWith(mark)
+    mark.append(target)
+    // Mermaid、图片等在跳转后才渲染，会把命中位置往下推；高亮期间文章尺寸变化就重新居中，
+    // 访客自己开始滚动后停止。直接定位，避免全局平滑滚动与跳转时回到页顶的滚动叠加。
+    const recenter = () => mark.scrollIntoView({ block: "center", behavior: "instant" })
+    const observer = new ResizeObserver(recenter)
+    const userEvents = ["wheel", "touchstart", "keydown"] as const
+    const stop = () => {
+      observer.disconnect()
+      userEvents.forEach((type) => window.removeEventListener(type, stop))
+    }
+    observer.observe(article)
+    userEvents.forEach((type) => window.addEventListener(type, stop, { passive: true }))
+    setTimeout(() => mark.classList.add("fade-out"), 2000)
+    setTimeout(() => {
+      stop()
+      const parent = mark.parentNode
+      mark.replaceWith(...mark.childNodes)
+      parent?.normalize()
+    }, 3000)
+    return
   }
 }
 
@@ -211,6 +255,7 @@ function setup(root: Element) {
       e.preventDefault()
       // 先点击再关闭：关闭会移除结果卡片，脱离文档的链接不会走 Quartz 的单页跳转
       const target = focused
+      sessionStorage.setItem(JUMP_KEY, input.value)
       target.click()
       close()
     }
@@ -222,7 +267,10 @@ function setup(root: Element) {
   on(results, "click", (e) => {
     const card = (e.target as Element).closest("a.result-card")
     const modified = e.ctrlKey || e.metaKey || e.shiftKey || e.altKey
-    if (card && !modified) close()
+    if (card && !modified) {
+      sessionStorage.setItem(JUMP_KEY, input.value)
+      close()
+    }
   })
   on(document, "keydown", (e) => {
     if (e.key.toLowerCase() === "k" && (e.ctrlKey || e.metaKey)) {
@@ -240,6 +288,7 @@ function setup(root: Element) {
 function init() {
   cleanups.splice(0).forEach((fn) => fn())
   document.querySelectorAll(".search").forEach(setup)
+  jumpToMatch()
 }
 document.addEventListener("nav", init)
 document.addEventListener("render", init)
